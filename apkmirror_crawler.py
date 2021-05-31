@@ -2,14 +2,10 @@ import cfscrape
 import requests
 import os
 from bs4 import BeautifulSoup
-
-
 #Download
 def download(url, file_name):
     file_name = file_name[:15]+".apk"
     os.system('wget --user-agent="Mozilla" -O {0} {1}'.format(file_name, url))
-
-
 #Home Url
 base_url = "https://www.apkmirror.com"
 #Config
