@@ -23,27 +23,27 @@ req = scraper.get(base_url).content
 soup = BeautifulSoup(req,'lxml')
 home_link = soup.find_all("a", {"class": "downloadLink"})
 home_link = home_link[2:]
-
+app_links = []
 for link in home_link:
-    app_links = link['href']
+    app_links.append(link['href'])
 #     print(app_links)
-# print(len(app_links))
+for x in app_links:
+    req = scraper.get(base_url+x).content
+    soup = BeautifulSoup(req, 'lxml')
+    div = soup.find_all("div", {"class": "table-row headerFont"})   
+    # print(div)
+    for tag in div:
+        app_link_2 = tag.find_all("a")
+        # print(app_link_2)
 
-req = scraper.get(base_url+app_links).content
-soup = BeautifulSoup(req, 'lxml')
-div = soup.find_all("div", {"class": "table-row headerFont"})
-# print(div)
-for tag in div:
-    app_link_2 = tag.find_all("a")
-    # print(app_link_2)
-for link in app_link_2:
-    download_link = link['href']
-download_link = download_link[1:]
-# print(base_url+"/"+download_link+"download")
-req = scraper.get(base_url+"/"+download_link+"download").content
-soup = BeautifulSoup(req, 'lxml')
-newlink = soup.find_all("a", {"rel": "nofollow"})
-u = "https://www.apkmirror.com"+newlink[1]['href']
-title = str(soup.title.text+".apk").replace(' ', '-').replace('/', '')
-# print(u+"\n"+title)
-download(u, title)
+    for link in app_link_2:
+        download_link = link['href']
+        download_link = download_link[1:]
+    print(base_url+"/"+download_link+"download")
+    req = scraper.get(base_url+"/"+download_link+"download").content
+    soup = BeautifulSoup(req, 'lxml')
+    newlink = soup.find_all("a", {"rel": "nofollow"})
+    u = "https://www.apkmirror.com"+newlink[1]['href']
+    title = str(soup.title.text+".apk").replace(' ', '-').replace('/', '')
+    print(u+"\n"+title)
+    download(u, title)
